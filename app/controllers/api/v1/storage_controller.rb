@@ -7,11 +7,12 @@ class Api::V1::StorageController < ApplicationController
       session = params.dig(:args,:session)
       user_response = create_user(user)
       session_response = create_session(session)
-      if user_response[:message].errors.nil?
+      if user_response[:message].errors.nil? && user_response[:user]
         user, session = user_response[:user], session_response[:session]
         render StorageSerializer.new(user, session)
       else
-        # Create Error Handling
+        message = user_response[:message]
+        render ErrorSerializer.new(message)
       end
     end
   end
