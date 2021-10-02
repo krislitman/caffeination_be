@@ -20,16 +20,8 @@ class Api::V1::StorageController < ApplicationController
 
   def create_user(user)
     user = User.create(
-        first_name: user[:first_name],
-        last_name: user[:last_name],
-        address_1: user[:address_1],
-        address_2: user[:address_2],
-        city: user[:city],
-        state: user[:state],
-        zipcode: user[:zipcode],
-        email: user[:email],
-        favorite_beverage: user[:favorite_beverage],
-        username: user[:username]
+        reference_id: user[:id],
+        configuration: user
         )
     message = user.save
     {user: user, message: message}
