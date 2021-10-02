@@ -9,7 +9,8 @@ class Api::V1::StorageController < ApplicationController
         session_response = create_session(session)
         if user_response[:message] == true && user_response[:user]
           user, session = user_response[:user], session_response[:session]
-          render StorageSerializer.new(user, session)
+          to_serialize = create_struct({user: user, session: session})
+          render json: StorageSerializer.new(to_serialize), status: 201
         else
           message = user_response[:message]
           render json: message, status: 400
@@ -20,6 +21,17 @@ class Api::V1::StorageController < ApplicationController
   end
 
   private
+
+  def create_struct(args)
+    case
+    when args[:user] && args[:session]
+      object = OpenStruct.new(
+        user: args[:user],
+        session: args[:session]
+      )
+    end
+    object
+  end
 
   def create_user(user)
     user = User.create(
