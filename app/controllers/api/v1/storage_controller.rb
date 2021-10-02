@@ -1,10 +1,10 @@
 class Api::V1::StorageController < ApplicationController
   def create
-      what_to_store = params.dig(:args,:type)
+      what_to_store = params.dig(:type)
       case
       when what_to_store == "store_user_and_session"
-        user = params.dig(:args,:user)
-        session = params.dig(:args,:session)
+        user = params.dig(:user)
+        session = params.dig(:session)
         user_response = create_user(user)
         session_response = create_session(session)
         if user_response[:message].errors.nil? && user_response[:user]
@@ -26,6 +26,7 @@ class Api::V1::StorageController < ApplicationController
         reference_id: user[:id],
         configuration: user
         )
+    require 'pry'; binding.pry
     message = user.save
     {user: user, message: message}
   end
