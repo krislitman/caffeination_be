@@ -17,7 +17,7 @@ gem 'puma', '~> 5.0'
 # gem 'bcrypt', '~> 3.1.7'
 
 # JSON API Creation
-gem 'active_model_serializers'
+gem 'blueprinter'
 
 # Helpers
 gem 'faker'

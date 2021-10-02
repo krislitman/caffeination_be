@@ -36,8 +36,8 @@ RSpec.describe "api/v1/store", type: :request do
       }
 
       post "/api/v1/store", params: parameters
-      require 'pry'; binding.pry
       response = JSON.parse(response.body, symbolize_names: true)
+      require 'pry'; binding.pry
       expect(response).to be_successful
       expect(response.status).to eq(201)
     end
