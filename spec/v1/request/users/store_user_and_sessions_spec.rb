@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "api/v1/store", type: :request do
   after :all do
-    Session.find_by(user_id: 100).destroy
-    User.find_by(reference: 100).destroy
+    # Session.find_by(user_id: 100).destroy
+    # User.find_by(reference_id: 100).destroy
   end
   context "Only accepts POST requests" do
     it "Without arguements request will fail" do
