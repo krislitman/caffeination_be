@@ -15,7 +15,11 @@ class Api::V1::StorageController < ApplicationController
               session: session
             }
           )
-          render json: StorageLogSerializer.new(storage_log), status: 201
+          if storage_log.save
+            render json: StorageLogSerializer.new(storage_log), status: 201
+          else
+            render json: storage_log.errors.full_messages, status: 400
+          end
         else
           message = user_response[:message]
           render json: message, status: 400
@@ -32,7 +36,11 @@ class Api::V1::StorageController < ApplicationController
         reference_id: user[:id],
         configuration: user
         )
-    message = user.save
+    if user.save
+      message = user.save
+    else
+      message = user.errors.full_messages
+    end
     {user: user, message: message}
   end
 
@@ -40,7 +48,11 @@ class Api::V1::StorageController < ApplicationController
     session = Session.create(
       user_id: session[:user_id]
     )
-    message = session.save
+    if session.save
+      message = session.save
+    else
+      message = session.errors.full_messages
+    end
     {session: session, message: message}
   end
 end

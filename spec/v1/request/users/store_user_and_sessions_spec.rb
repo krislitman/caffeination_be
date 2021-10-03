@@ -39,8 +39,12 @@ RSpec.describe "api/v1/store", type: :request do
 
       post api_v1_store_path, headers: headers, params: JSON.generate(parameters)
       expected = JSON.parse(response.body, symbolize_names: true)
+
       expect(response).to be_successful
       expect(response.status).to eq(201)
+      expect(expected).to be_an_instance_of Hash
+      expect(expected.dig(:data, :attributes, :configuration).keys).to include(:user)
+      expect(expected.dig(:data, :attributes, :configuration).keys).to include(:session)
     end
   end
 end
