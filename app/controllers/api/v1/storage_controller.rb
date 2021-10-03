@@ -1,37 +1,46 @@
 class Api::V1::StorageController < ApplicationController
   def create
-    what_to_store = params.dig(:args,:type)
-    case
-    when what_to_store == "store_user_and_session"
-      user = params.dig(:args,:user)
-      session = params.dig(:args,:session)
-      user_response = create_user(user)
-      session_response = create_session(session)
-      if user_response[:message].errors.nil?
-        user, session = user_response[:user], session_response[:session]
-        render StorageSerializer.new(user, session)
-      else
-        # Create Error Handling
+      what_to_store = params.dig(:type)
+      case
+      when what_to_store == "store_user_and_session"
+        user = params.dig(:user)
+        session = params.dig(:session)
+        user_response = create_user(user)
+        session_response = create_session(session)
+        if user_response[:message] == true && user_response[:user]
+          user, session = user_response[:user], session_response[:session]
+          storage_log = StorageLog.create(
+            configuration: {
+              user: user,
+              session: session
+            }
+          )
+          if storage_log.save
+            render json: StorageLogSerializer.new(storage_log), status: 201
+          else
+            render json: storage_log.errors.full_messages, status: 400
+          end
+        else
+          message = user_response[:message]
+          render json: message, status: 400
+        end
+      when !what_to_store
+        render json: { message: 'No parameters given' }, status: 400
       end
-    end
   end
 
   private
 
   def create_user(user)
     user = User.create(
-        first_name: user[:first_name],
-        last_name: user[:last_name],
-        address_1: user[:address_1],
-        address_2: user[:address_2],
-        city: user[:city],
-        state: user[:state],
-        zipcode: user[:zipcode],
-        email: user[:email],
-        favorite_beverage: user[:favorite_beverage],
-        username: user[:username]
+        reference_id: user[:id],
+        configuration: user
         )
-    message = user.save
+    if user.save
+      message = user.save
+    else
+      message = user.errors.full_messages
+    end
     {user: user, message: message}
   end
 
@@ -39,7 +48,11 @@ class Api::V1::StorageController < ApplicationController
     session = Session.create(
       user_id: session[:user_id]
     )
-    message = session.save
+    if session.save
+      message = session.save
+    else
+      message = session.errors.full_messages
+    end
     {session: session, message: message}
   end
 end
