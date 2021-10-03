@@ -17,7 +17,9 @@ gem 'puma', '~> 5.0'
 # gem 'bcrypt', '~> 3.1.7'
 
 # JSON API Creation
-gem 'blueprinter'
+gem 'jsonapi-serializer'
+gem 'oj'
+gem 'json'
 
 # Helpers
 gem 'faker'

@@ -9,11 +9,11 @@ class Api::V1::StorageController < ApplicationController
         session_response = create_session(session)
         if user_response[:message] == true && user_response[:user]
           user, session = user_response[:user], session_response[:session]
-          storage_log = StorageLog.new(
-           configuration: {
-             user: user,
-             session: session
-           }
+          storage_log = StorageLog.create(
+            configuration: {
+              user: user,
+              session: session
+            }
           )
           render json: StorageLogSerializer.new(storage_log), status: 201
         else

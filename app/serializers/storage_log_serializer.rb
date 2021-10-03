@@ -1,3 +1,4 @@
-class StorageLogSerializer < ActiveModel::Serializer
+class StorageLogSerializer
+  include JSONAPI::Serializer
   attributes :configuration
 end

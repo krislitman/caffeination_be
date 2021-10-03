@@ -15,6 +15,8 @@ RSpec.describe "api/v1/store", type: :request do
   end
   context "With correct parameters, request will be successful" do
     it "Creates a User and Session when parameters are given" do
+      headers = { 'CONTENT_TYPE' => 'application/json',
+        'ACCEPT' => 'application/json'}
       parameters = {
         user: {
           id: 100,
@@ -35,9 +37,8 @@ RSpec.describe "api/v1/store", type: :request do
         type: "store_user_and_session"
       }
 
-      post "/api/v1/store", params: parameters
-      response = JSON.parse(response.body, symbolize_names: true)
-      require 'pry'; binding.pry
+      post api_v1_store_path, headers: headers, params: JSON.generate(parameters)
+      expected = JSON.parse(response.body, symbolize_names: true)
       expect(response).to be_successful
       expect(response.status).to eq(201)
     end
