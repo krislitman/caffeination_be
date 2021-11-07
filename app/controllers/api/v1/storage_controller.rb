@@ -1,8 +1,9 @@
 class Api::V1::StorageController < ApplicationController
   def create
+    begin
       request_type = parse(params.dig(:type))
       case
-      when request_type.keys.include?(:store_user_and_session)
+      when request_type.keys.include?(:store_user_and_session) || request_type.keys.include?("store_user_and_session")
         user = parse(params.dig(:user))
         session = parse(params.dig(:session))
         user_response = create_user(user)
@@ -27,6 +28,9 @@ class Api::V1::StorageController < ApplicationController
       when !request_type
         render json: { message: 'No parameters given' }, status: 400
       end
+    rescue
+      render json: { message: 'No parameters given' }, status: 400
+    end
   end
 
   def destroy_all_test
@@ -65,6 +69,9 @@ class Api::V1::StorageController < ApplicationController
   end
 
   def parse(object)
-    JSON.parse(object, symbolize_names: true)
+    if object.class != ActionController::Parameters
+      object = JSON.parse(object, symbolize_names: true)
+    end
+    object
   end
 end

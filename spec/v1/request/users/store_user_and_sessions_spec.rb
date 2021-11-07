@@ -2,15 +2,18 @@ require "rails_helper"
 
 RSpec.describe "api/v1/store", type: :request do
   after :all do
-    # Session.find_by(user_id: 100).destroy
-    # User.find_by(reference_id: 100).destroy
+    Session.destroy_all
+    User.destroy_all
+    StorageLog.destroy_all
   end
   context "Only accepts POST requests" do
     it "Without arguements request will fail" do
-      post "/api/v1/store"
+      post api_v1_store_path, headers: { 'Content-Type' => 'application/json'}, params: {}
+      expected = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).not_to be_successful
       expect(response.status).to eq(400)
+      expect(expected[:message]).to eq("No parameters given")
     end
   end
   context "With correct parameters, request will be successful" do
@@ -34,10 +37,10 @@ RSpec.describe "api/v1/store", type: :request do
         session: {
           user_id: 100
         },
-        type: "store_user_and_session"
+        type: { store_user_and_session: true }
       }
 
-      post api_v1_store_path, headers: headers, params: JSON.generate(parameters)
+      post api_v1_store_path, headers: headers, params: parameters.to_json
       expected = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to be_successful
