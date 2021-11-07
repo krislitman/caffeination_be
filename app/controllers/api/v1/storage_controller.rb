@@ -1,14 +1,14 @@
 class Api::V1::StorageController < ApplicationController
   def create
-      what_to_store = params.dig(:type)
+      request_type = parse(params.dig(:type))
       case
-      when what_to_store == "store_user_and_session"
-        user = params.dig(:user)
-        session = params.dig(:session)
+      when request_type.keys.include?(:store_user_and_session)
+        user = parse(params.dig(:user))
+        session = parse(params.dig(:session))
         user_response = create_user(user)
         session_response = create_session(session)
-        if user_response[:message] == true && user_response[:user]
-          user, session = user_response[:user], session_response[:session]
+        if user_response.dig(:message) == true && user_response.dig(:user)
+          user, session = user_response.dig(:user), session_response.dig(:session)
           storage_log = StorageLog.create(
             configuration: {
               user: user,
@@ -24,9 +24,17 @@ class Api::V1::StorageController < ApplicationController
           message = user_response[:message]
           render json: message, status: 400
         end
-      when !what_to_store
+      when !request_type
         render json: { message: 'No parameters given' }, status: 400
       end
+  end
+
+  def destroy_all_test
+    raise "There was an error destroying users" unless User.destroy_all
+    raise "There was an error destroying sessions" unless Session.destroy_all
+    raise "There was an error destroying storage_logs" unless StorageLog.destroy_all
+
+    render json: { message: 'Back End Database Cleared' }, status: 200
   end
 
   private
@@ -54,5 +62,9 @@ class Api::V1::StorageController < ApplicationController
       message = session.errors.full_messages
     end
     {session: session, message: message}
+  end
+
+  def parse(object)
+    JSON.parse(object, symbolize_names: true)
   end
 end
