@@ -14,19 +14,19 @@ jobs:
           POSTGRES_DB: caffeination_be_test
           POSTGRES_PASSWORD: POSTGRES_HOST_AUTH_METHOD=trust
     steps:
+      # Setup environment
       - checkout
-
-      # Bundle install dependencies
-      - run: bundle install --path vendor/bundle
+      - run: gem install bunder:2.2.3
+      - run: bundle config set --local path 'projects/caffeination_rails/caffeination_be'
+      - run: bundle install --path 'projects/caffeination_rails/caffeination_be'
 
       # Wait for DB
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
 
-      # Setup the environment
-      - run: cp .sample.env .env
-
       # Setup the database
-      - run: bundle exec rake db:setup
+      - run: bundle exec rails db:create
+      - run: bundle exec rails db:migrate
+      - run: bundle exec rails db:schema:load
 
       # Run the tests
-      - run: bundle exec rake
+      - run: bundle exec rspec
