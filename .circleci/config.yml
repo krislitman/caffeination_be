@@ -12,7 +12,7 @@ jobs:
         environment:
           POSTGRES_USER: caffeination_be
           POSTGRES_DB: caffeination_be_test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: POSTGRES_HOST_AUTH_METHOD=trust
     steps:
       - checkout
 
