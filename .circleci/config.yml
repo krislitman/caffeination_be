@@ -16,7 +16,7 @@ jobs:
     steps:
       # Setup environment
       - checkout
-      - run: gem install bunder:2.2.15
+      - run: gem install bunder:1.15.0
       - run: bundle config set --local path 'projects/caffeination_rails/caffeination_be'
       - run: bundle install --path 'projects/caffeination_rails/caffeination_be'
 
