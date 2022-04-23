@@ -1,4 +1,4 @@
 class StorageLogSerializer
-  include JSONAPI::Serializer
-  attributes :configuration
+	include JSONAPI::Serializer
+	attributes :configuration
 end

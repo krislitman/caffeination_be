@@ -1,3 +1,3 @@
 class StorageLog < ApplicationRecord
-  validates :configuration, presence: true
+	validates :configuration, presence: true
 end
