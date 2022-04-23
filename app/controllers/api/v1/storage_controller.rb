@@ -1,8 +1,26 @@
 class Api::V1::StorageController < ApplicationController
 	def create
 		begin
-			request_type = parse(params.dig(:type))
+			request_type = parse(params.dig(:storage, :type))
 			case
+			when request_type.to_s == "user"
+				storage_log = StorageLog.create(
+					configuration: {
+						type: params.dig(:storage, :type),
+						event: params.dig(:storage, :event),
+						first_name: params.dig(:storage, :first_name),
+						last_name: params.dig(:storage, :last_name),
+						username: params.dig(:storage, :username),
+						email: params.dig(:storage, :email),
+						zipcode: params.dig(:storage, :zipcode),
+						created_at: Time.now.to_s
+					}
+				)
+				if storage_log.save
+					render json: StorageLogSerializer.new(storage_log), status: 201
+				else
+					render json: storage_log.errors.full_messages, status: 400
+				end
 			when request_type.keys.include?(:store_user_and_session) || request_type.keys.include?("store_user_and_session")
 				user = parse(params.dig(:user))
 				session = parse(params.dig(:session))
@@ -71,7 +89,7 @@ class Api::V1::StorageController < ApplicationController
 	end
 
 	def parse(object)
-		if object.class != ActionController::Parameters
+		if object.class != ActionController::Parameters && object.is_a?(Hash)
 			object = JSON.parse(object, symbolize_names: true)
 		end
 		object

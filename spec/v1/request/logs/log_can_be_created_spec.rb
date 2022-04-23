@@ -21,7 +21,7 @@ RSpec.describe "User Log can be created", type: :request do
 
 	context "Request will be successful with payload" do
 		it "api/vi/store" do
-			post api_vi_store_path, headers: headers, params: params.to_json
+			post api_v1_store_path, headers: @headers, params: @params.to_json
 			resp = JSON.parse(response.body, symbolize_names: true)
 
 			expect(response).to be_successful
