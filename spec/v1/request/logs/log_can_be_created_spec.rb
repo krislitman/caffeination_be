@@ -19,14 +19,22 @@ RSpec.describe "User Log can be created", type: :request do
 		}
 	end
 
-	context "Request will be successful with payload" do
-		it "api/vi/store" do
+	context "api/vi/store" do
+		it "Request will be successful with payload" do
 			post api_v1_store_path, headers: @headers, params: @params.to_json
 			resp = JSON.parse(response.body, symbolize_names: true)
 
 			expect(response).to be_successful
 			expect(response.status).to eq(201)
 			expect(resp).to be_a(Hash)
+			expect(resp.dig(:data,:attributes,:configuration,:type)).to eq("user")
+		end
+
+		it "Will fail with no payload" do
+			post api_v1_store_path, headers: @headers, params: {}
+
+			expect(response).not_to be_successful
+			expect(response.status).to eq(400)
 		end
 	end
 end
