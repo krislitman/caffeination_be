@@ -42,12 +42,6 @@ your local machine for development and testing purposes.
 4. Run rails s to start the rails server
 5. Enter endpoints (see below) into Postman to see JSON responses!
 
-### Redis
-
-You will need to have Redis installed on your local machine to run the test suite correctly.
-Please follow these instructions to install Redis: [Redis](https://redis.io/download).
-Run `redis-server` before running the test suite.
-
 ## Endpoints
 
 ## Running the tests
@@ -69,9 +63,7 @@ To run individual tests use:
 - JSON API Serializer
 - HTTParty
 - Shoulda Matchers
-- Redis
 - Factory Bot Rails
-- Launchy
 - Better Errors
 
 ## Versions
