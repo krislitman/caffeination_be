@@ -9,13 +9,15 @@ RSpec.describe "User Log can be created", type: :request do
 		@headers = {'CONTENT_TYPE' => 'application/json',
 			'ACCEPT' => 'application/json'}
 		@params = {
-			type: :user,
-			event: :create,
-			first_name: "Apollo",
-			last_name: "Breviario",
-			username: "Apollo_Eros",
-			email: "example@example.com",
-			zipcode: 86753
+			"created_at"=>"2022-04-23 00:34:43 -0400",
+			"payload"=>{
+				"type"=>"user",
+				"event"=>"create",
+				"first_name"=>"Y A2eb Yyz Xz",
+				"last_name"=>"Ua Cl Ft Fjt0",
+				"username"=>"O3FnjPaqki",
+				"email"=>"guy@example.com",
+				"zipcode"=>"JKGCWTg1QT"}
 		}
 	end
 

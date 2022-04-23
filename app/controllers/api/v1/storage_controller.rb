@@ -1,19 +1,19 @@
 class Api::V1::StorageController < ApplicationController
 	def create
 		begin
-			request_type = parse(params.dig(:storage, :type))
+			request_type = parse(params.dig(:payload, :type))
 			case
 			when request_type.to_s == "user"
 				storage_log = StorageLog.create(
 					configuration: {
-						type: params.dig(:storage, :type),
-						event: params.dig(:storage, :event),
-						first_name: params.dig(:storage, :first_name),
-						last_name: params.dig(:storage, :last_name),
-						username: params.dig(:storage, :username),
-						email: params.dig(:storage, :email),
-						zipcode: params.dig(:storage, :zipcode),
-						created_at: Time.now.to_s
+						type: params.dig(:payload, :type),
+						event: params.dig(:payload, :event),
+						first_name: params.dig(:payload, :first_name),
+						last_name: params.dig(:payload, :last_name),
+						username: params.dig(:payload, :username),
+						email: params.dig(:payload, :email),
+						zipcode: params.dig(:payload, :zipcode),
+						created_at: params.dig(:created_at)
 					}
 				)
 				if storage_log.save
