@@ -1,33 +1,33 @@
 class Api::V1::StorageController < ApplicationController
 	def create
 		begin
-		request_type = parse(params.dig(:type))
-		case
-		when request_type.keys.include?(:store_user_and_session) || request_type.keys.include?("store_user_and_session")
-			user = parse(params.dig(:user))
-			session = parse(params.dig(:session))
-			user_response = create_user(user)
-			session_response = create_session(session)
-			if user_response.dig(:message) == true && user_response.dig(:user)
-				user, session = user_response.dig(:user), session_response.dig(:session)
-				storage_log = StorageLog.create(
-					configuration: {
-					user: user,
-					session: session
-					}
-				)
-				if storage_log.save
-					render json: StorageLogSerializer.new(storage_log), status: 201
+			request_type = parse(params.dig(:type))
+			case
+			when request_type.keys.include?(:store_user_and_session) || request_type.keys.include?("store_user_and_session")
+				user = parse(params.dig(:user))
+				session = parse(params.dig(:session))
+				user_response = create_user(user)
+				session_response = create_session(session)
+				if user_response.dig(:message) == true && user_response.dig(:user)
+					user, session = user_response.dig(:user), session_response.dig(:session)
+					storage_log = StorageLog.create(
+						configuration: {
+						user: user,
+						session: session
+						}
+					)
+					if storage_log.save
+						render json: StorageLogSerializer.new(storage_log), status: 201
+					else
+						render json: storage_log.errors.full_messages, status: 400
+					end
 				else
-					render json: storage_log.errors.full_messages, status: 400
+					message = user_response[:message]
+					render json: message, status: 400
 				end
-			else
-				message = user_response[:message]
-				render json: message, status: 400
+			when !request_type
+				render json: { message: 'No parameters given' }, status: 400
 			end
-		when !request_type
-			render json: { message: 'No parameters given' }, status: 400
-		end
 		rescue
 			render json: { message: 'No parameters given' }, status: 400
 		end
