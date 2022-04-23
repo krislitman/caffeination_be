@@ -19,7 +19,7 @@ RSpec.describe "api/v1/store", type: :request do
 	end
 
 	context "With correct parameters, request will be successful" do
-		it "Creates a User and Session when parameters are given" do
+		xit "Creates a User and Session when parameters are given" do
 		headers = { 'CONTENT_TYPE' => 'application/json',
 			'ACCEPT' => 'application/json'}
 		parameters = {
