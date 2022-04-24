@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "User and Storage Log can be created", type: :request do
 	after(:all) do
-		User.destroy_all
 		StorageLog.destroy_all
+		User.destroy_all
 	end
 
 	setup do
@@ -14,6 +14,7 @@ RSpec.describe "User and Storage Log can be created", type: :request do
 			"payload"=>{
 				"type"=>"user",
 				"event"=>"create",
+				"id"=>"1234",
 				"first_name"=>"Y A2eb Yyz Xz",
 				"last_name"=>"Ua Cl Ft Fjt0",
 				"username"=>"O3FnjPaqki",
@@ -28,6 +29,15 @@ RSpec.describe "User and Storage Log can be created", type: :request do
 
 			expect(response).not_to be_successful
 			expect(response.status).to eq(400)
+		end
+
+		it "Is successful with valid parameters" do
+			post api_v1_user_log_path, headers: @headers, params: @params.to_json
+			parsed = JSON.parse(response.body, symbolize_names: true)
+
+			expect(response).to be_successful
+			expect(response.status).to eq(201)
+			expect(parsed).to be_a(Hash)
 		end
 	end
 end

@@ -2,14 +2,15 @@ class Api::V1::UserLogController < ApplicationController
 	def create
 		begin
 			user = User.create(
-				reference_id: params.dig(:payload, :user, :id),
-				first_name: params.dig(:payload, :user, :first_name),
-				last_name: params.dig(:payload, :user, :last_name),
-				username: params.dig(:payload, :user, :username),
-				email: params.dig(:payload, :user, :email),
-				zipcode: params.dig(:payload, :user, :zipcode)
+				reference_id: params.dig(:payload, :id),
+				first_name: params.dig(:payload, :first_name),
+				last_name: params.dig(:payload, :last_name),
+				username: params.dig(:payload, :username),
+				email: params.dig(:payload, :email),
+				zipcode: params.dig(:payload, :zipcode)
 			)
 			storage_log = StorageLog.create(
+				user_id: user.id,
 				configuration: {
 					type: params.dig(:payload, :type),
 					event: params.dig(:payload, :event),
@@ -22,11 +23,11 @@ class Api::V1::UserLogController < ApplicationController
 				}
 			)
 			if user.save && storage_log.save
-				render json: StorageLogSerializer.new(storage_log), status: 201
+				render json: StorageLogSerializer.new(storage_log), status: :created
 			elsif !storage_log.save
-				render json: storage_log.errors.full_messages, status: 400
+				render json: storage_log.errors.full_messages, status: :bad_request
 			elsif !user.save
-				render json: user.errors.full_messages, status: 400
+				render json: user.errors.full_messages, status: :bad_request
 			end
 		rescue
 			render json: {message: "Bad Request, please try again"}, status: :bad_request
