@@ -1,14 +1,14 @@
 class Api::V1::CoffeeShopController < ApplicationController
 	def create
 		begin
-			coffee_shop.create(
-				name: params.dig(:payload, :coffee_shop, :name),
-				yelp_id: params.dig(:payload, :coffee_shop, :yelp_id),
-				rating: params.dig(:payload, :coffee_shop, :rating),
-				location: params.dig(:payload, :coffee_shop, :location),
+			coffee_shop = CoffeeShop.create(
+				name: params.dig(:payload, :coffee_shop).dig(:name),
+				yelp_id: params.dig(:payload, :coffee_shop).dig(:yelp_id),
+				rating: params.dig(:payload, :coffee_shop).dig(:rating),
+				location: params.dig(:payload, :coffee_shop).dig(:location),
 				user_id: params.dig(:payload, :id)
 			)
-			storage_log.create(
+			storage_log = StorageLog.create(
 				user_id: params.dig(:payload, :id),
 				configuration: {
 					type: params.dig(:payload, :type),
@@ -16,6 +16,7 @@ class Api::V1::CoffeeShopController < ApplicationController
 					created_at: params.dig(:created_at)
 				}
 			)
+			require 'pry'; binding.pry
 			if coffee_shop.save && storage_log.save
 				render json: StorageLogSerializer.new(storage_log), status: :created
 			elsif !storage_log.save
