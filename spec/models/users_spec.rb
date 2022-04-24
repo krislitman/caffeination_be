@@ -5,4 +5,7 @@ RSpec.describe User, type: :model do
 		it { should validate_presence_of :reference_id }
 		it { should validate_presence_of :configuration }
 	end
+	context "Relationships" do
+		it { should have_many(:storage_logs) }
+	end
 end
