@@ -8,6 +8,8 @@ RSpec.describe "Coffee Shop object and Storage Log created when a User favorites
 	end
 
 	setup do
+		@user = create(:user)
+		require 'pry'; binding.pry
 		@headers = {'CONTENT_TYPE' => 'application/json',
 			'ACCEPT' => 'application/json'}
 		@params = {
