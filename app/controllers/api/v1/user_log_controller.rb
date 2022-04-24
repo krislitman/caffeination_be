@@ -1,9 +1,6 @@
 class Api::V1::UserLogController < ApplicationController
 	def create
 		begin
-			if params[:payload].nil?
-				render json: {message: "No parameters provided"}, status: :bad_request
-			end
 			user = User.create(
 				reference_id: params.dig(:payload, :user, :id),
 				first_name: params.dig(:payload, :user, :first_name),
