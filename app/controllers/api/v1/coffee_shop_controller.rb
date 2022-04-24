@@ -16,7 +16,6 @@ class Api::V1::CoffeeShopController < ApplicationController
 					created_at: params.dig(:created_at)
 				}
 			)
-			require 'pry'; binding.pry
 			if coffee_shop.save && storage_log.save
 				render json: StorageLogSerializer.new(storage_log), status: :created
 			elsif !storage_log.save

@@ -9,7 +9,6 @@ RSpec.describe "Coffee Shop object and Storage Log created when a User favorites
 
 	setup do
 		@user = create(:user)
-		require 'pry'; binding.pry
 		@headers = {'CONTENT_TYPE' => 'application/json',
 			'ACCEPT' => 'application/json'}
 		@params = {
@@ -17,7 +16,7 @@ RSpec.describe "Coffee Shop object and Storage Log created when a User favorites
 			"payload"=>{
 				"type"=>"user",
 				"event"=>"favorite",
-				"id"=>"1234",
+				"id"=>"#{@user.id}",
 				"coffee_shop"=>{
 					"name"=>"Blind Tiger",
 					"rating"=>"9",
