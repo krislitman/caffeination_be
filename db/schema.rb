@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_02_030613) do
+ActiveRecord::Schema.define(version: 2022_04_24_194829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "coffee_shops", force: :cascade do |t|
+    t.string "yelp_id"
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.string "rating"
+    t.string "location"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_coffee_shops_on_user_id"
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id"
@@ -25,6 +36,8 @@ ActiveRecord::Schema.define(version: 2021_10_02_030613) do
     t.jsonb "configuration", default: "{}", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_storage_logs_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -32,6 +45,13 @@ ActiveRecord::Schema.define(version: 2021_10_02_030613) do
     t.jsonb "configuration", default: "{}", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "username"
+    t.string "email"
+    t.string "zipcode"
   end
 
+  add_foreign_key "coffee_shops", "users"
+  add_foreign_key "storage_logs", "users"
 end
