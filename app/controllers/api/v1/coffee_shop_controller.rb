@@ -1,15 +1,16 @@
 class Api::V1::CoffeeShopController < ApplicationController
 	def create
 		begin
+			user = User.find(params.dig(:payload, :id))
 			coffee_shop = CoffeeShop.create(
 				name: params.dig(:payload, :coffee_shop).dig(:name),
 				yelp_id: params.dig(:payload, :coffee_shop).dig(:yelp_id),
 				rating: params.dig(:payload, :coffee_shop).dig(:rating),
 				location: params.dig(:payload, :coffee_shop).dig(:location),
-				user_id: params.dig(:payload, :id)
+				user_id: user.id
 			)
 			storage_log = StorageLog.create(
-				user_id: params.dig(:payload, :id),
+				user_id: user.id,
 				configuration: {
 					type: params.dig(:payload, :type),
 					event: params.dig(:payload, :event),

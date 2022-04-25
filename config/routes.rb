@@ -6,7 +6,13 @@ Rails.application.routes.draw do
 			post "/user_log", to: "user_log#create"
 
 			# Favorite
-			post "favorite", to: "coffee_shop#create"
+			post "/favorite", to: "coffee_shop#create"
+
+			# Find User
+			get "/user", to: "user#find"
+
+			# Find User Favorites
+			get "/user_favorites", to: "user#find_favorites"
 		end
 	end
 end
