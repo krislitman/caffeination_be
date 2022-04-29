@@ -25,14 +25,14 @@ RSpec.describe "User and Storage Log can be created", type: :request do
 
 	context "POST api/v1/user_log" do
 		it "Is not successful with no parameters" do
-			post api_v1_user_log_path, headers: @headers, params: {}
+			post api_v1_user_log_index_path, headers: @headers, params: {}
 
 			expect(response).not_to be_successful
 			expect(response.status).to eq(400)
 		end
 
 		it "Is successful with valid parameters" do
-			post api_v1_user_log_path, headers: @headers, params: @params.to_json
+			post api_v1_user_log_index_path, headers: @headers, params: @params.to_json
 			parsed = JSON.parse(response.body, symbolize_names: true)
 
 			expect(response).to be_successful

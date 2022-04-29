@@ -1,4 +1,21 @@
 class Api::V1::UserLogController < ApplicationController
+	resource_description do
+		formats [:json]
+		api_versions "public"
+	end
+
+	api :POST, "/api/v1/user_log" "Create User Log"
+	description "Create a User Log when User is created on Front-End"
+	param :payload, Hash, desc: "Includes User Data" do
+		param :type, String, desc: "Type of Request"
+		param :event, String, desc: "Event Type"
+		param :id, String, desc: "Id of User"
+		param :first_name, String, desc: "First Name of User"
+		param :last_name, String, desc: "Last Name of User"
+		param :username, String, desc: "Username of User"
+		param :email, String, desc: "Email of User"
+		param :zipcode, String, desc: "ZipCode of User"
+	end
 	def create
 		begin
 			user = User.create(
