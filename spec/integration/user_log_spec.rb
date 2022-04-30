@@ -26,16 +26,6 @@ describe 'Creating a User Log' do
         },
         required: [ 'payload', 'type', 'event', 'id', 'first_name', 'last_name', 'user_name', 'email', 'zipcode']
       }
-
-      response '201', 'user_log created' do
-        let(:blog) { { title: 'foo', content: 'bar' } }
-        run_test!
-      end
-
-      response '422', 'invalid request' do
-        let(:blog) { { title: 'foo' } }
-        run_test!
-      end
     end
-  end
+end
 end

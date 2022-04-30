@@ -27,7 +27,7 @@ gem 'oj'
 gem 'json'
 
 # Helpers
-gem 'faker'
+# gem 'faker'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
