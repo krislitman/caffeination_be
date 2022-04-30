@@ -16,13 +16,18 @@ gem 'puma', '~> 5.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Documentation Gem
+gem 'apipie-rails'
+gem 'rdoc'
+gem 'rswag'
+
 # JSON API Creation
 gem 'jsonapi-serializer'
 gem 'oj'
 gem 'json'
 
 # Helpers
-gem 'faker'
+# gem 'faker'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

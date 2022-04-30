@@ -28,4 +28,23 @@ class Api::V1::CoffeeShopController < ApplicationController
 			render json: {message: "Bad Request, please try again"}, status: :bad_request
 		end
 	end
+
+	def favorite_check
+		user = User.find_by(email: params[:email])
+		boolean = CoffeeShop.check_if_favorited(user.id, params[:yelp_id])
+		if user && boolean
+			render json: {message: boolean}, status: :ok
+		else
+			render json: coffee_shop.errors.full_messages, status: :bad_request
+		end
+	end
+
+	def destroy
+		shop = CoffeeShop.find_by(user_id: params[:user_id], yelp_id: params[:yelp_id])
+		if shop.destroy
+			render json: {message: :success}, status: :ok
+		else
+			render json: {message: "#{shop.errors.full_messages}"}, status: :bad_request
+		end
+	end
 end
