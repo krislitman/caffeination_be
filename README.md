@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/krislitman/caffeination_be.svg?style=shield)](https://circleci.com/gh/krislitman/caffeination_be)
+[![Heroku App Status](http://heroku-shields.herokuapp.com/caffeinationbe/api/v1/test)](http://caffeinationbe.herokuapp.com/api/v1/test)
 
 # Caffeination
 
