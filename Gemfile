@@ -19,7 +19,7 @@ gem 'puma', '~> 5.0'
 # Documentation Gem
 gem 'apipie-rails'
 gem 'rdoc'
-gem 'rswag'
+# gem 'rswag'
 
 # JSON API Creation
 gem 'jsonapi-serializer'
