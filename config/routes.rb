@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 	# Store Objects from FE
 	namespace :api do
 		namespace :v1 do
+			# Test
+			get "/test", to: "test#index"
+
 			# User Logs
 			resources :user_log, only: [:create], controller: :user_log
 			post "/user_log", to: "user_log#create"
